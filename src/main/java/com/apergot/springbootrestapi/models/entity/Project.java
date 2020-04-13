@@ -5,8 +5,8 @@ import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
 @Entity
-@Table(name="certs")
-public class Cert implements Serializable {
+@Table(name = "projects")
+public class Project implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,32 +18,26 @@ public class Cert implements Serializable {
 
     @NotEmpty
     @Column(nullable=false)
-    private String teacher;
-
-    @NotEmpty
-    @Column(nullable=false)
-    private String cert_id;
-
-    @NotEmpty
-    @Column(nullable=false)
     private String link;
+
+    @NotEmpty
+    @Column(nullable=false)
+    private String description;
 
     @NotEmpty
     @Column(nullable=false)
     private String platform;
 
     @NotEmpty
-    @Column(nullable=false)
-    private String description;
+    @Column(nullable = false)
+    private String type;
 
-    private String image;
-
-    public String getImage() {
-        return image;
+    public String getType() {
+        return type;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Long getId() {
@@ -62,22 +56,6 @@ public class Cert implements Serializable {
         this.name = name;
     }
 
-    public String getTeacher() {
-        return teacher;
-    }
-
-    public void setTeacher(String teacher) {
-        this.teacher = teacher;
-    }
-
-    public String getCert_id() {
-        return cert_id;
-    }
-
-    public void setCert_id(String cert_id) {
-        this.cert_id = cert_id;
-    }
-
     public String getLink() {
         return link;
     }
@@ -86,20 +64,20 @@ public class Cert implements Serializable {
         this.link = link;
     }
 
-    public String getPlatform() {
-        return platform;
-    }
-
-    public void setPlatform(String platform) {
-        this.platform = platform;
-    }
-
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(String platform) {
+        this.platform = platform;
     }
 
     private static final long serialVersionUID = 1L;
