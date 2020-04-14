@@ -1,6 +1,7 @@
 package com.apergot.springbootrestapi.controllers;
 
 import com.apergot.springbootrestapi.models.entity.Cert;
+import com.apergot.springbootrestapi.models.services.AmazonService;
 import com.apergot.springbootrestapi.models.services.ICertService;
 import com.apergot.springbootrestapi.models.services.IUploadFileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ import java.util.stream.Collectors;
 public class CertRestController {
 
     @Autowired
-    private IUploadFileService uploadFileService;
+    private AmazonService amazonService;
 
     @Autowired
     private ICertService certService;
@@ -72,7 +73,7 @@ public class CertRestController {
     public ResponseEntity<?> create(@Valid @RequestPart("cert") Cert cert, @Valid @RequestPart("file") MultipartFile file, BindingResult result){
 
         Cert createdCert = null;
-        String filename = null;
+        String filename = "";
         Map<String, Object> map = new HashMap<>();
 
         if (result.hasErrors()) {
@@ -86,7 +87,7 @@ public class CertRestController {
 
         if (!file.isEmpty()) {
             try {
-                filename = uploadFileService.save(file);
+                filename = this.amazonService.uploadFile(file);
             } catch (IOException e) {
                 map.put("message", "error while uploading cert image");
                 map.put("error", e.getMessage().concat(": ").concat(e.getCause().getMessage()));
@@ -162,19 +163,5 @@ public class CertRestController {
         map.put("message", "client updated successfully!");
         map.put("client", updatedCert);
         return new ResponseEntity<>(map, HttpStatus.CREATED);
-    }
-
-    @GetMapping("/uploads/img/{filename:.+}")
-    public ResponseEntity<Resource> showImage(@PathVariable String filename) {
-        Map<String, Object> map = new HashMap<>();
-        Resource resource = null;
-        try {
-            resource = uploadFileService.load(filename);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+resource.getFilename()+"\"");
-        return new ResponseEntity<>(resource, headers, HttpStatus.OK);
     }
 }
