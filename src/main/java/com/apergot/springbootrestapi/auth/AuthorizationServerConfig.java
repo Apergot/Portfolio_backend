@@ -42,8 +42,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         //Here we might want configure each application which uses our API Rest
-        clients.inMemory().withClient("angularapp")
-                .secret(passwordEncoder.encode("12345"))
+        clients.inMemory().withClient("perdofolio")
+                .secret(passwordEncoder.encode("perdofolio12345*"))
          .scopes("read", "write")
         .authorizedGrantTypes("password", "refresh_token")
         .accessTokenValiditySeconds(3600).refreshTokenValiditySeconds(3600);

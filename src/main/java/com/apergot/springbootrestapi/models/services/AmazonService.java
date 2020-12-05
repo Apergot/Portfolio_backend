@@ -1,11 +1,9 @@
 package com.apergot.springbootrestapi.models.services;
 
-import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -51,7 +49,7 @@ public class AmazonService {
     }
 
     private File convertMultipartToFile(MultipartFile file) throws IOException{
-        File convFile = new File(file.getOriginalFilename());
+        File convFile = new File(String.format("%s/webapps/%s", System.getProperty("catalina.base"), file.getOriginalFilename()));
         FileOutputStream fos = new FileOutputStream(convFile);
         fos.write(file.getBytes());
         fos.close();
